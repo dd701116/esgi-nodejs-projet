@@ -1,0 +1,19 @@
+{
+  "name": "esgi-nodejs-projet",
+  "version": "1.0.0",
+  "description": "Cours Node.jsCours Node.js - Réalisation d'une API pour un client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dd701116/esgi-nodejs-projet.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dd701116/esgi-nodejs-projet/issues"
+  },
+  "homepage": "https://github.com/dd701116/esgi-nodejs-projet#readme"
+}
