@@ -15,6 +15,16 @@ Cours Node.jsCours Node.js - Réalisation d'une API pour un client
     npm install
 ```
 
+- Installer le serveur mongodb (avec docker)
+```sh
+    docker run --rm --publish 27017:27017 --name mongodb-pour-nodejs mongo:4
+```
+
+- Tester la connexion au serveur mongo
+```sh
+    docker run --rm -it --link mongodb-pour-nodejs:mongo mongo:4 mongo --host mongo test
+```
+
 - Lancer le serveur
 ```
     npm start
