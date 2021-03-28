@@ -10,9 +10,9 @@ if (config_default.production){
   if (!process.env.PORT || !process.env.MONGODB_URI || !process.env.JWT_KEY) {
     console.error("I need some information to work in production mode !");
     console.error(`{ PORT: ${process.env.PORT} , MONGODB_URI: ${process.env.MONGODB_URI}, JWT_KEY: ${process.env.JWT_KEY}}`);
-    console.log(`{ PORT: ${process.env.PORT} , MONGODB_URI: ${process.env.MONGODB_URI}, JWT_KEY: ${process.env.JWT_KEY}}`);
     process.exit(1);
   }
+  console.log(`{ PORT: ${process.env.PORT} , MONGODB_URI: ${process.env.MONGODB_URI}, JWT_KEY: ${process.env.JWT_KEY}}`);
   config = {  
     production: true,
     PORT: process.env.PORT,
