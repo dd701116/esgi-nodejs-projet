@@ -4,7 +4,9 @@
   "description": "Cours Node.jsCours Node.js - Réalisation d'une API pour un client",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node node_modules/mocha/bin/mocha",
+    "start": "node server",
+    "dev": "nodemon server"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,12 @@
   "bugs": {
     "url": "https://github.com/dd701116/esgi-nodejs-projet/issues"
   },
-  "homepage": "https://github.com/dd701116/esgi-nodejs-projet#readme"
+  "homepage": "https://github.com/dd701116/esgi-nodejs-projet#readme",
+  "dependencies": {
+    "fastify": "^3.14.1"
+  },
+  "devDependencies": {
+    "mocha": "^8.3.2",
+    "nodemon": "^2.0.7"
+  }
 }
