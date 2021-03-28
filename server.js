@@ -12,7 +12,6 @@ if (config_default.production){
     console.error(`{ PORT: ${process.env.PORT} , MONGODB_URI: ${process.env.MONGODB_URI}, JWT_KEY: ${process.env.JWT_KEY}}`);
     process.exit(1);
   }
-  console.log(`{ PORT: ${process.env.PORT} , MONGODB_URI: ${process.env.MONGODB_URI}, JWT_KEY: ${process.env.JWT_KEY}}`);
   config = {  
     production: true,
     PORT: process.env.PORT,
@@ -31,7 +30,7 @@ fastify.get('/', async (request, reply) => {
 // Run the server!
 const start = async () => {
   try {
-    await fastify.listen(config.PORT);
+    await fastify.listen(config.PORT, '0.0.0.0');
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
