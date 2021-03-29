@@ -40,7 +40,7 @@ Enter your Heroku credentials.
 ...
 $ heroku create
 Creating arcane-lowlands-8408... done, stack is cedar
-https://young-shelf-40805.herokuapp.com/ | git@heroku.com:young-shelf-40805.git
+https://esgi-nodejs-projet.herokuapp.com/ | git@heroku.com:esgi-nodejs-projet.git
 Git remote heroku added
 $ git push heroku main
 ```
@@ -49,7 +49,7 @@ $ git push heroku main
 
 ## DEMO
 
-Déployé sur heroku => https://xxxxxxxxx.herokuapp.com/
+Déployé sur heroku => https://esgi-nodejs-projet.herokuapp.com/
 
 <br>
 <hr>
