@@ -27,6 +27,14 @@ const NoteFactory = {
         }else{
             throw new CustomError("L'utilisateur ne peut etre vide", 400);
         }
+    },
+
+    parse: (data) => {
+        if (data._id && data.userId && data.content &&
+             data.createdAt && data.lastUpdateAt){
+                return new Note(data.userId, data.content, data.createdAt, data.lastUpdateAt);
+        }
+        throw new CustomError("Le serveur rencontre un problème durant la récupération de vos données (#NOTEFACTORY:PARSE)", 500);
     }
 }
 
