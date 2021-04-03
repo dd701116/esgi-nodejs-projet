@@ -2,7 +2,6 @@
 const fastify = require('fastify')({ logger: true });
 
 const fs = require('fs');
-
 const config_default = JSON.parse(fs.readFileSync("config.default.json"));
 let config;
 
@@ -26,6 +25,20 @@ if (config_default.production){
 fastify.get('/', async (request, reply) => {
   return { hello: 'world' };
 });
+
+
+
+
+
+
+
+//Déclaration des routes pour les notes
+require('./routes/note.route')(fastify);
+
+
+
+
+
 
 // Run the server!
 const start = async () => {
