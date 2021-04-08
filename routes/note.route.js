@@ -1,9 +1,9 @@
+const noteController = require('../controllers/note.controllers');
+
 module.exports = fastify => {
 
     //Créer la note
-    fastify.put('/notes', (req, res) => {
-        res.send('Créer la note');
-    });
+    fastify.put('/notes', noteController.create);
 
     fastify.patch('/notes/:id', (req, res) => {
         res.send('Mettre a jour la note')
