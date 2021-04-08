@@ -1,8 +1,6 @@
 // Require the framework and instantiate it
 const fastify = require('fastify')({ logger: true });
 
-const mongodb = require("./db/client.db");
-
 const fs = require('fs');
 const config_default = JSON.parse(fs.readFileSync("config.default.json"));
 let config;
@@ -22,9 +20,6 @@ if (config_default.production){
 }else{
   config = config_default;
 }
-
-//Ouverture de la connexion mongodb
-mongodb();
 
 // Declare a route
 fastify.get('/', async (request, reply) => {
