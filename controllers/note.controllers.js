@@ -11,7 +11,7 @@ exports.create = async (req, res) => {
         throw new customError("Le contenu est requis", 401);
     }
 
-    const userID = 1;
+    const userID = req.locals.userID;
     const content = req.body.content;
 
     const newNote = note.create(userID, content);
