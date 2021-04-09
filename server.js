@@ -1,6 +1,6 @@
 // Require the framework and instantiate it
 const fastify = require('fastify')({ logger: true });
-
+const mongodb = require("./db/client.db");
 const fs = require('fs');
 
 const config_default = JSON.parse(fs.readFileSync("config.default.json"));
@@ -12,7 +12,7 @@ if (config_default.production){
     console.error(`{ PORT: ${process.env.PORT} , MONGODB_URI: ${process.env.MONGODB_URI}, JWT_KEY: ${process.env.JWT_KEY}}`);
     process.exit(1);
   }
-  config = {  
+  config = {
     production: true,
     PORT: process.env.PORT,
     MONGODB_URI: process.env.MONGODB_URI,
@@ -26,6 +26,12 @@ if (config_default.production){
 fastify.get('/', async (request, reply) => {
   return { hello: 'world' };
 });
+
+//Ouverture de la connexion mongodb
+mongodb();
+
+//Déclaration des routes pour les notes
+require('./routes/note.route')(fastify);
 
 // Run the server!
 const start = async () => {

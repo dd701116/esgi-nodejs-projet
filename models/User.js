@@ -19,7 +19,7 @@ const UserFactory = {
         }
       }else{
         throw new CustomError("Votre identifiant doit contenir entre 2 et 20 caractères", 400);
-      }   
+      }
     }else{
       throw new CustomError("Votre identifiant ne doit contenir que des lettres minuscules non accentuées", 400);
     }
