@@ -14,7 +14,7 @@ exports.create = async (req, res) => {
     const userID = req.locals.userID;
     const content = req.body.content;
 
-    const newNote = note.create(3, content);
+    const newNote = note.create(userID, content);
 
     //Si pas d'erreur on rajoute la note a la BDD
     let client = mongodb.getConnection();
