@@ -14,7 +14,7 @@ exports.create = async (req, res) => {
     const userID = req.locals.userID;
     const content = req.body.content;
 
-    const newNote = note.create(userID, content);
+    const newNote = note.create(3, content);
 
     //Si pas d'erreur on rajoute la note a la BDD
     let client = mongodb.getConnection();
@@ -28,7 +28,6 @@ exports.create = async (req, res) => {
 };
 
 exports.change = async (req, res) => {
-    const uIdTest = 1234;
 
     if (!req.params || !req.params.id) {
         throw new customError("L'id de la note est requis", 403);
@@ -37,6 +36,7 @@ exports.change = async (req, res) => {
         throw new customError("Le nouveau contenu de la note est requis", 403);
     }
 
+    const uId = req.locals.userID;
     const noteId = req.params.id;
     const content = req.body.content;
     let client = mongodb.getConnection();
@@ -44,7 +44,7 @@ exports.change = async (req, res) => {
 
 
     try{
-        filter = {  "_id" :ObjectId(noteId)};
+        filter = {  "_id" :ObjectId(noteId), "userId" : uId};
     }catch(e){
         throw new customError("L'id n'est pas valable", 406);
     }
