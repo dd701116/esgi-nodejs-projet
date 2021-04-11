@@ -8,31 +8,31 @@ describe("The User module", () => {
     assert.strictEqual(result.constructor.name, "User");
   });
 
-  it(`Should be show 'Votre identifiant ne doit contenir que des lettres minuscules non accentuées' when username = succèss`, async () => {
+  it(`Should show 'Votre identifiant ne doit contenir que des lettres minuscules non accentuées' when username = succèss`, async () => {
     assert.throws(() => {
       let result = User.create("succèss", "password");
     }, new CustomError("Votre identifiant ne doit contenir que des lettres minuscules non accentuées", 400));
   });
 
-  it(`Should be show 'Votre identifiant ne doit contenir que des lettres minuscules non accentuées' when username = Success`, async () => {
+  it(`Should show 'Votre identifiant ne doit contenir que des lettres minuscules non accentuées' when username = Success`, async () => {
     assert.throws(() => {
       let result = User.create("Success", "password");
     }, new CustomError("Votre identifiant ne doit contenir que des lettres minuscules non accentuées", 400));
   });
 
-  it(`Should be show 'Votre identifiant doit contenir entre 2 et 20 caractères' when username length < 2`, async () => {
+  it(`Should show 'Votre identifiant doit contenir entre 2 et 20 caractères' when username length < 2`, async () => {
     assert.throws(() => {
       let result = User.create("s", "password");
     }, new CustomError("Votre identifiant doit contenir entre 2 et 20 caractères", 400));
   });
 
-  it(`Should be show 'Votre identifiant doit contenir entre 2 et 20 caractères' when username length > 20`, async () => {
+  it(`Should show 'Votre identifiant doit contenir entre 2 et 20 caractères' when username length > 20`, async () => {
     assert.throws(() => {
       let result = User.create("sssssssssssssssssssss", "password");
     }, new CustomError("Votre identifiant doit contenir entre 2 et 20 caractères", 400));
   });
 
-  it(`Should be show 'Le mot de passe doit contenir au moins 4 caractères' when password length < 4`, async () => {
+  it(`Should show 'Le mot de passe doit contenir au moins 4 caractères' when password length < 4`, async () => {
     assert.throws(() => {
       let result = User.create("success", "p");
     }, new CustomError("Le mot de passe doit contenir au moins 4 caractères", 400));
@@ -47,7 +47,7 @@ describe("The User module", () => {
     assert.strictEqual(result.constructor.name, "User");
   });
 
-  it(`Should be show 'Le serveur rencontre un problème durant la récupération de vos données (#USERFACTORY:PARSE)' when the data is corrupted`, async () => {
+  it(`Should show 'Le serveur rencontre un problème durant la récupération de vos données (#USERFACTORY:PARSE)' when the data is corrupted`, async () => {
     assert.throws(() => {
       let result = User.parse({
         username:"username",
