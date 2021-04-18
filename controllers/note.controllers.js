@@ -11,7 +11,7 @@ exports.create = async (req, res) => {
         throw new customError("Le contenu est requis", 401);
     }
 
-    const userID = 1; //req.locals.userID
+    const userID = req.locals.userID;
     const content = req.body.content;
 
     const newNote = note.create(userID, content);
@@ -69,7 +69,7 @@ exports.delete = async (req, res) => {
         throw new customError("L'id de la note est requis", 403);
     }
 
-    const uId = 1; //req.locals.userID;
+    const uId = req.locals.userID;
     const noteId = req.params.id;
     let client = mongodb.getConnection();
     let filter;
@@ -82,7 +82,7 @@ exports.delete = async (req, res) => {
     }
 
     try{
-        const result = await client.db("esgi").collection("note").deleteOne(filter);
+        await client.db("esgi").collection("note").deleteOne(filter);
         return res.send({"error": null});
     }catch(e){
         throw new customError("Impossible de supprimer la note", 402);
