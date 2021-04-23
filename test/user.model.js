@@ -38,6 +38,12 @@ describe("The User module", () => {
     }, new CustomError("Le mot de passe doit contenir au moins 4 caractères", 400));
   });
 
+  it(`Should be show 'Le mot de passe doit contenir au moins 4 caractères' when password length < 4`, async () => {
+    assert.throws(() => {
+      let result = User.create("success", "p    ");
+    }, new CustomError("Le mot de passe doit contenir au moins 4 caractères", 400));
+  });
+
   it(`Should parse a User object`, async () => {
     let result = User.parse({
       _id:"165121",
