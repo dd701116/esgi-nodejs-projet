@@ -34,8 +34,9 @@ fastify.post('/', async (request, reply) => {
 
 
 
-//Déclaration des routes pour les notes
+//Déclaration des routes
 require('./routes/note.route')(fastify);
+require('./routes/user.route')(fastify);
 
 //  Verifie le token
 fastify.addHook('preValidation', async (request, reply) => {
