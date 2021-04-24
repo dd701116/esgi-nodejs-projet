@@ -14,6 +14,8 @@ exports.create = async (req, res) => {
         throw new customError("Utilisateur non connecté", 401);
     }
 
+    const client = mongodb.getConnection();
+
     const userID = req.body._token.sub;
     const content = req.body.content;
 
@@ -75,7 +77,7 @@ exports.delete = async (req, res) => {
     const noteId = req.params.id;
     let client = mongodb.getConnection();
 
-    const filter = {"_id" :ObjectId(noteId)};
+    const filter = {  "_id" :ObjectId(noteId)};
     const note = await client.db("esgi").collection("note").findOne(filter);
     
     if (!note) {
@@ -88,5 +90,5 @@ exports.delete = async (req, res) => {
 
     await client.db("esgi").collection("note").deleteOne(filter);
 
-    return true;
+    return res.send({});
 }
