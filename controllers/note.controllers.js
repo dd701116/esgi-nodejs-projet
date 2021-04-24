@@ -67,3 +67,28 @@ exports.change = async (req, res) => {
     const result = await client.db("esgi").collection("note").findOneAndUpdate(filter2, updateDoc, {returnNewDocument : true, returnOriginal: false});
     return res.send(result.value);
 }
+
+exports.delete = async (req, res) => {
+    if (!req.params || !req.params.id) {
+        throw new customError("L'id de la note est requis", 403);
+    }
+
+    const uId = req.locals.userID;
+    const noteId = req.params.id;
+    let client = mongodb.getConnection();
+    let filter;
+
+
+    try{
+        filter = {  "_id" :ObjectId(noteId), "userId" : uId};
+    }catch(e){
+        throw new customError("L'id n'est pas valable", 404);
+    }
+
+    try{
+        await client.db("esgi").collection("note").deleteOne(filter);
+        return res.send({"error": null});
+    }catch(e){
+        throw new customError("Impossible de supprimer la note", 402);
+    }
+}
