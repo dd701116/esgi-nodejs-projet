@@ -5,26 +5,28 @@ const ObjectId = require('mongodb').ObjectID;
 
 
 exports.create = async (req, res) => {
-
+    
     //Si pas de body
     if (!req.body || !req.body.content) {
         throw new customError("Le contenu est requis", 401);
     }
-
-    const userID = req.locals.userID;
-    const content = req.body.content;
-
-    const newNote = note.create(userID, content);
+    if (req.body._token===false) {
+        throw new customError("Utilisateur non connecté", 401);
+    }
+    
+    const filter = {  "username" : req.body._token.sub};
 
     //Si pas d'erreur on rajoute la note a la BDD
     let client = mongodb.getConnection();
 
-    try{
-        const result = await client.db("esgi").collection("note").insertOne(newNote);
-        return res.send({note: result.ops[0]});
-    }catch(e){
-        throw new customError("Impossible de rajouter la note", 402);
-    }
+    const user = await client.db("esgi").collection("user").findOne(filter);
+    const userID = user._id;
+    const content = req.body.content;
+
+    const newNote = note.create(userID, content);
+
+    const result = await client.db("esgi").collection("note").insertOne(newNote);
+    return res.send({note: result.ops[0]});
 };
 
 exports.change = async (req, res) => {
