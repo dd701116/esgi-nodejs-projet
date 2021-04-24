@@ -25,7 +25,7 @@ exports.signin = async (req, res) => {
             throw new CustomError("Username incorrect", 407);
         }
 
-        const samePassword = await !bcrypt.compare(user.password, result.password);
+        const samePassword = await bcrypt.compare(user.password, result.password);
 
         if (!samePassword){
             throw new CustomError("Mot de passe incorrect", 408);
