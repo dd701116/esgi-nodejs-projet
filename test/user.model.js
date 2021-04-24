@@ -45,20 +45,8 @@ describe("The User module", () => {
   });
 
   it(`Should parse a User object`, async () => {
-    let result = User.parse({
-      _id:"165121",
-      username:"username",
-      password:"password"
-    });
+    let result = User.parse("username","password");
     assert.strictEqual(result.constructor.name, "User");
   });
 
-  it(`Should show 'Le serveur rencontre un problème durant la récupération de vos données (#USERFACTORY:PARSE)' when the data is corrupted`, async () => {
-    assert.throws(() => {
-      let result = User.parse({
-        username:"username",
-        password:"password"
-      });
-    }, new CustomError("Le serveur rencontre un problème durant la récupération de vos données (#USERFACTORY:PARSE)", 500));
-  });
 });
