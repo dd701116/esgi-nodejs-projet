@@ -11,10 +11,7 @@ exports.signin = async (req, res) => {
         throw new CustomError('Merci de spécifier votre username & password', 403);
     }
 
-    const user = {
-        username: req.body.username,
-        password: req.body.password
-    };
+    const user = User.parse(req.body.username, req.body.password);
 
     let client = mongodb.getConnection();
     const filter = {  "username" : user.username};
