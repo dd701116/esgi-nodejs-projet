@@ -37,17 +37,23 @@ exports.change = async (req, res) => {
     if (!req.body || !req.body.content) {
         throw new customError("Le nouveau contenu de la note est requis", 403);
     }
+    if (req.body._token===false) {
+        throw new customError("Utilisateur non connecté", 401);
+    }
 
-    const uId = req.locals.userID;
+    const filter1 = {  "username" : req.body._token.sub};
+
+    //Si pas d'erreur on rajoute la note a la BDD
+    let client = mongodb.getConnection();
+
+    const user = await client.db("esgi").collection("user").findOne(filter1);
+    const userID = user._id;
     const noteId = req.params.id;
     const content = req.body.content;
-    let client = mongodb.getConnection();
-    let filter;
-
-
-    try{
-        filter = {  "_id" :ObjectId(noteId), "userId" : uId};
-    }catch(e){
+    const filter2 = {  "_id" :ObjectId(noteId), "userId" : userID};
+    const note = await client.db("esgi").collection("note").findOne(filter2);
+    
+    if (!note) {
         throw new customError("L'id n'est pas valable", 406);
     }
 
@@ -58,10 +64,6 @@ exports.change = async (req, res) => {
         }
     };
 
-    try{
-        const result = await client.db("esgi").collection("note").findOneAndUpdate(filter, updateDoc, {returnNewDocument : true, returnOriginal: false});
-        return res.send(result.value);
-    }catch(e){
-        throw new customError("Impossible de modifier la note", 402);
-    }
+    const result = await client.db("esgi").collection("note").findOneAndUpdate(filter2, updateDoc, {returnNewDocument : true, returnOriginal: false});
+    return res.send(result.value);
 }
