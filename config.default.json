@@ -1,5 +1,5 @@
 {
-  "production" : true,
+  "production" : false,
   "PORT":8000,
   "MONGODB_URI": "mongodb://127.0.0.1:27017/?poolSize=20&writeConcern=majority",
   "JWT_KEY": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"

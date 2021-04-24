@@ -1,6 +1,7 @@
 const CustomError = require('./CustomError');
 
 
+
 class Note{
     constructor(userId, content, createdAt, lastUpdateAt){
         this.userId = userId;

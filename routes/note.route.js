@@ -10,4 +10,8 @@ module.exports = fastify => {
     fastify.delete('/notes/:id', (req, res) => {
         res.send('Supprimer la note');
     });
+
+    
+    // recupérer plusieurs notes 
+    fastify.get('/notes/:Id', noteController.getAllNotesByUser);
 }
