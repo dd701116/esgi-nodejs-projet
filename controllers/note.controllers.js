@@ -41,11 +41,15 @@ exports.change = async (req, res) => {
     const userID = req.body._token.sub;
     const noteId = req.params.id;
     const content = req.body.content;
-    const filter = {  "_id" :ObjectId(noteId), "userId" : userID};
+    const filter = {  "_id" :ObjectId(noteId)};
     const note = await client.db("esgi").collection("note").findOne(filter);
     
     if (!note) {
         throw new customError("L'id n'est pas valable", 406);
+    }
+
+    if (note.userId!==userID) {
+        throw new customError("Accès non autorisé à cette note", 403);
     }
 
     const updateDoc = {
@@ -67,22 +71,23 @@ exports.delete = async (req, res) => {
         throw new customError("Utilisateur non connecté", 401);
     }
 
-    const uId = req.body._token.sub;
+    const userID = req.body._token.sub;
     const noteId = req.params.id;
     let client = mongodb.getConnection();
     let filter;
 
-
-    try{
-        filter = {  "_id" :ObjectId(noteId), "userId" : uId};
-    }catch(e){
-        throw new customError("L'id n'est pas valable", 404);
+    const filter = {"_id" :ObjectId(noteId)};
+    const note = await client.db("esgi").collection("note").findOne(filter);
+    
+    if (!note) {
+        throw new customError("L'id n'est pas valable", 406);
     }
 
-    try{
-        await client.db("esgi").collection("note").deleteOne(filter);
-        return res.send({"error": null});
-    }catch(e){
-        throw new customError("Impossible de supprimer la note", 402);
+    if (note.userId!==userID) {
+        throw new customError("Accès non autorisé à cette note", 403);
     }
+
+    await client.db("esgi").collection("note").deleteOne(filter);
+
+    return true;
 }
