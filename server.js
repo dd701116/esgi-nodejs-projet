@@ -49,7 +49,7 @@ fastify.addHook('preValidation', async (request, reply) => {
   } catch (e) {
     token_verified = false;
   }
-  request.body = { ...request.body, _token: token_verified };
+  request.body = { ...request.body, _token: token_verified, _config:config };
 });
 
 
