@@ -30,8 +30,9 @@ fastify.get('/', async (request, reply) => {
 //Ouverture de la connexion mongodb
 mongodb();
 
-//Déclaration des routes pour les notes
+//Déclaration des routes
 require('./routes/note.route')(fastify);
+require('./routes/user.route')(fastify);
 
 // Run the server!
 const start = async () => {
