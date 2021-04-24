@@ -74,7 +74,6 @@ exports.delete = async (req, res) => {
     const userID = req.body._token.sub;
     const noteId = req.params.id;
     let client = mongodb.getConnection();
-    let filter;
 
     const filter = {"_id" :ObjectId(noteId)};
     const note = await client.db("esgi").collection("note").findOne(filter);
