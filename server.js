@@ -1,11 +1,14 @@
 // Require the framework and instantiate it
 const fastify = require('fastify')({ logger: true });
 const mongodb = require("./db/client.db");
+const Token = require("./models/Token");
 const fs = require('fs');
+const { verify } = require('./models/Token');
 
 const config_default = JSON.parse(fs.readFileSync("config.default.json"));
 let config;
 
+//  Cree la config
 if (config_default.production){
   if (!process.env.PORT || !process.env.MONGODB_URI || !process.env.JWT_KEY) {
     console.error("I need some information to work in production mode !");
@@ -26,12 +29,45 @@ if (config_default.production){
 fastify.get('/', async (request, reply) => {
   return { hello: 'world' };
 });
+fastify.post('/', async (request, reply) => {
+  return { hello: 'world' };
+});
 
-//Ouverture de la connexion mongodb
-mongodb();
+
 
 //Déclaration des routes pour les notes
 require('./routes/note.route')(fastify);
+
+//  Verifie le token
+fastify.addHook('preValidation', async (request, reply) => {
+  let verified = false;
+  try {
+    const token = request.headers["x-access-token"];
+    if (token) {
+      verified = Token.verify(token, config.JWT_KEY);
+    }
+  } catch (e) {
+    verified = false;
+  }
+  request.body = { ...request.body, _verified: verified };
+});
+
+
+//  Ajoute error = null avant d'envoyer le resultat
+fastify.addHook('onSend', async (request, reply, payload) => {
+  //const newPayload = payload.replace('some-text', 'some-new-text')
+  const newPayload = JSON.parse(payload);
+  if (!newPayload.error) {
+    newPayload.error = null;
+  }
+  console.log(newPayload);
+  return JSON.stringify(newPayload);
+});
+
+//  En cas d'erreur, la renvoyer avec le bon format
+fastify.setErrorHandler((err, req, res) => {
+  res.status(err.code).send({error: err.message});
+});
 
 // Run the server!
 const start = async () => {
@@ -42,4 +78,15 @@ const start = async () => {
     process.exit(1);
   }
 }
-start();
+
+//Ouverture de la connexion mongodb
+console.log("Connecting to db...");
+mongodb().then(res => {
+  console.log("Connecting to db...OK");
+  console.log("Starting to server...");
+  start();
+  console.log("Starting to server...OK");
+}).catch(e => {
+  console.error("Connecting to db...FAILED");
+  console.error(e);
+})

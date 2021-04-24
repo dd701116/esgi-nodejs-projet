@@ -13,8 +13,7 @@ module.exports = async () => {
             useUnifiedTopology : true
         });
     }catch(e){
-        console.error("Couldn't connect to mongodb");
-        process.exit(-1);
+        throw new Error("Couldn't connect to mongodb");
     }
 }
 
