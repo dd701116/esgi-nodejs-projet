@@ -14,7 +14,7 @@ const UserFactory = {
     if (username === username.toLowerCase().trim() && username === utils.removeAccent(username).trim()) {
       if (username.length>=2 && username.length<=20) {
         if (password.trim().length>=4) {
-          return new User(username, bcrypt.hashSync(password,1));
+          return new User(username, bcrypt.hashSync(password,10));
         }else{
           throw new CustomError("Le mot de passe doit contenir au moins 4 caractères", 400);
         }
