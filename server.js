@@ -3,7 +3,6 @@ const fastify = require('fastify')({ logger: true });
 const mongodb = require("./db/client.db");
 const Token = require("./models/Token");
 const fs = require('fs');
-const { verify } = require('./models/Token');
 
 const config_default = JSON.parse(fs.readFileSync("config.default.json"));
 let config;
@@ -40,16 +39,16 @@ require('./routes/note.route')(fastify);
 
 //  Verifie le token
 fastify.addHook('preValidation', async (request, reply) => {
-  let verified = false;
+  let token_verified = false;
   try {
     const token = request.headers["x-access-token"];
     if (token) {
-      verified = Token.verify(token, config.JWT_KEY);
+      token_verified = Token.verify(token, config.JWT_KEY);
     }
   } catch (e) {
-    verified = false;
+    token_verified = false;
   }
-  request.body = { ...request.body, _verified: verified };
+  request.body = { ...request.body, _token: token_verified };
 });
 
 
