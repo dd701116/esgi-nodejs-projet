@@ -28,6 +28,7 @@ exports.signin = async (req, res) => {
             throw new CustomError("Mot de passe incorrect", 408);
         }
 
+        user._id = result._id;
         res.send({token: token.create(user, req.body._config.JWT_KEY)});
 
     }catch(e){
@@ -48,6 +49,8 @@ exports.signup = async (req, res) => {
             throw new CustomError("Cet identifiant est déjà associé à un compte", 400);
         }
         await client.db("esgi").collection("user").insertOne(user);
+        const result2 = await client.db("esgi").collection("user").findOne(filter);
+        user._id = result2._id;
         res.send({token: token.create(user, req.body._config.JWT_KEY)});
 
     }catch(e){
