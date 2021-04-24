@@ -1,6 +1,7 @@
 const CustomError = require('../models/CustomError');
 const mongodb = require('../db/client.db');
 const token = require('../models/Token');
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
 //Permet a un utilisateur de s'identifier
 
@@ -30,7 +31,7 @@ exports.signin = async (req, res) => {
             throw new CustomError("Mot de passe incorrect", 408);
         }
 
-        res.send({accessToken: token.create(user, req.body._config.JWT_KEY)});
+        res.send({token: token.create(user, req.body._config.JWT_KEY)});
 
     }catch(e){
         throw new CustomError(e.message, 406);
