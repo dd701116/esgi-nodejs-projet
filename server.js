@@ -2,6 +2,7 @@
 const fastify = require('fastify')({ logger: true });
 const mongodb = require("./db/client.db");
 const Token = require("./models/Token");
+const CustomError = require("./models/CustomError");
 const fs = require('fs');
 
 const config_default = JSON.parse(fs.readFileSync("config.default.json"));
@@ -66,7 +67,11 @@ fastify.addHook('onSend', async (request, reply, payload) => {
 
 //  En cas d'erreur, la renvoyer avec le bon format
 fastify.setErrorHandler((err, req, res) => {
-  res.status(err.code).send({error: err.message});
+  if (err instanceof CustomError) {
+    res.status(err.code).send({error: err.message});
+  }else {
+    res.status(500).send({error: err.message});
+  }
 });
 
 // Run the server!
