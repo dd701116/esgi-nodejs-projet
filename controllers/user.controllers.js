@@ -37,3 +37,23 @@ exports.signin = async (req, res) => {
         throw new CustomError(e.message, 406);
     }
 }
+
+exports.signup = async (req, res) => {
+
+    const user = User.create(req.body.username, req.body.password);
+    const filter = {  "username" : user.username};
+
+    let client = mongodb.getConnection();
+
+    try{
+        const result = await client.db("esgi").collection("user").findOne(filter);
+        if (result) {
+            throw new CustomError("Cet identifiant est déjà associé à un compte", 400);
+        }
+        await client.db("esgi").collection("user").insertOne(user);
+        res.send({token: token.create(user, req.body._config.JWT_KEY)});
+
+    }catch(e){
+        throw new CustomError(e.message, 406);
+    }
+}
