@@ -51,7 +51,7 @@ exports.change = async (req, res) => {
         throw new customError("L'id n'est pas valable", 406);
     }
 
-    if (note.userId!==userID) {
+    if (note.userId.toString()!==userID) {
         throw new customError("Accès non autorisé à cette note", 403);
     }
 
@@ -85,7 +85,7 @@ exports.delete = async (req, res) => {
         throw new customError("L'id n'est pas valable", 406);
     }
 
-    if (note.userId!==userID) {
+    if (note.userId.toString()!==userID) {
         throw new customError("Accès non autorisé à cette note", 403);
     }
 
