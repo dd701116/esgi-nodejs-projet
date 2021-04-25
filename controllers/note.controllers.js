@@ -17,6 +17,7 @@ exports.create = async (req, res) => {
     const client = mongodb.getConnection();
 
     const userID = req.body._token.sub;
+
     const content = req.body.content;
 
     const newNote = note.create(userID, content);
@@ -92,3 +93,41 @@ exports.delete = async (req, res) => {
 
     return res.send({});
 }
+
+exports.getAllNotesByUser = async (req, res ) => { 
+    if (!req.params || !req.params.Id) {
+        throw new customError("L'id de la note est requis", 403);
+    }
+    
+    //onst uId = req.local.userID;
+    const uId = req.params.Id;
+    let client = mongodb.getConnection();
+    const db = client.db("esgi")
+
+    try {
+        const filter = {"_id" :ObjectId(uId)}
+        const result = db.collection("user").findOne(filter);
+        console.log(result);
+    } catch(e) {
+        throw new customError("L'id de l'user est incorrecte", 404);
+    }
+
+    let filter;
+
+    try {
+        filter = { "userId" : uId};
+    } catch(e) {
+        throw new customError("L'id n'est pas valable", 404);
+    }
+
+    try {
+        const option = {
+           sort: {createdAt : -1}  
+        }
+        const result = await db.collection("note").find(filter, option).toArray();
+        return res.send(result);
+    } catch(e) {
+        throw new customError("Impossible de récupérer la note", 402);
+    }
+}
+

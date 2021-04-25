@@ -31,5 +31,4 @@ describe('The note module', () => {
         );
     });
 
-
 });

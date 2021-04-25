@@ -7,7 +7,11 @@ module.exports = fastify => {
 
     //Modifier la note
     fastify.patch('/notes/:id', noteController.change);
+    
+    // recupérer plusieurs notes 
+    fastify.get('/notes/:Id', noteController.getAllNotesByUser);
 
     //Supprimer la note
     fastify.delete('/notes/:id', noteController.delete);
+
 }
