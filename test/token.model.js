@@ -7,10 +7,11 @@ describe('The token module', () => {
     it('Should create a token wich expired in 24h', async () => {
         let secretKey = "blablabla";
         let userObject = user.create("john", "azerty");
+        userObject._id = "1";
         let time = Date.now();
         let result = token.create(userObject, secretKey);
         let decode = jsonwebtoken.verify(result,secretKey);
-        assert.deepStrictEqual({sub: decode.sub, exp: decode.exp}, {sub: userObject.username, exp: Math.floor(Date.now() / 1000) + 86400});
+        assert.deepStrictEqual({sub: decode.sub, exp: decode.exp}, {sub: userObject._id, exp: Math.floor(Date.now() / 1000) + 86400});
     });
 
     it('Should verify a token', async () => {
