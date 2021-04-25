@@ -16,7 +16,7 @@ exports.create = async (req, res) => {
 
     const client = mongodb.getConnection();
 
-    const userID = req.body._token.sub;
+    const userID = ObjectId(req.body._token.sub);
 
     const content = req.body.content;
 
