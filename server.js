@@ -27,13 +27,8 @@ if (config_default.production){
 
 // Declare a route
 fastify.get('/', async (request, reply) => {
-  return { hello: 'world' };
+  return { hello: 'world', other: 'I\'m fine !' };
 });
-fastify.post('/', async (request, reply) => {
-  return { hello: 'world' };
-});
-
-
 
 //Déclaration des routes
 require('./routes/note.route')(fastify);
