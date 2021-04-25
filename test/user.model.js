@@ -38,21 +38,15 @@ describe("The User module", () => {
     }, new CustomError("Le mot de passe doit contenir au moins 4 caractères", 400));
   });
 
+  it(`Should be show 'Le mot de passe doit contenir au moins 4 caractères' when password length < 4`, async () => {
+    assert.throws(() => {
+      let result = User.create("success", "p    ");
+    }, new CustomError("Le mot de passe doit contenir au moins 4 caractères", 400));
+  });
+
   it(`Should parse a User object`, async () => {
-    let result = User.parse({
-      _id:"165121",
-      username:"username",
-      password:"password"
-    });
+    let result = User.parse("username","password");
     assert.strictEqual(result.constructor.name, "User");
   });
 
-  it(`Should show 'Le serveur rencontre un problème durant la récupération de vos données (#USERFACTORY:PARSE)' when the data is corrupted`, async () => {
-    assert.throws(() => {
-      let result = User.parse({
-        username:"username",
-        password:"password"
-      });
-    }, new CustomError("Le serveur rencontre un problème durant la récupération de vos données (#USERFACTORY:PARSE)", 500));
-  });
 });

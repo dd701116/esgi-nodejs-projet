@@ -10,7 +10,7 @@ describe('The token module', () => {
         let time = Date.now();
         let result = token.create(userObject, secretKey);
         let decode = jsonwebtoken.verify(result,secretKey);
-        assert.deepStrictEqual({sub: decode.sub, exp: decode.exp}, {sub: userObject.username, exp: time + 86400});
+        assert.deepStrictEqual({sub: decode.sub, exp: decode.exp}, {sub: userObject.username, exp: Math.floor(Date.now() / 1000) + 86400});
     });
 
     it('Should verify a token', async () => {
