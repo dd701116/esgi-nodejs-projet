@@ -108,6 +108,6 @@ exports.getAllNotesByUser = async (req, res ) => {
         sort: {createdAt : -1}  
      }
      const result = await client.db("esgi").collection("note").find(filter, option).toArray();
-     return res.send(result);
+     return res.send({notes: result});
 }
 
