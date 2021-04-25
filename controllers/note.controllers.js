@@ -95,39 +95,19 @@ exports.delete = async (req, res) => {
 }
 
 exports.getAllNotesByUser = async (req, res ) => { 
-    if (!req.params || !req.params.Id) {
-        throw new customError("L'id de la note est requis", 403);
+    if (req.body._token===false) {
+        throw new customError("Utilisateur non connecté", 401);
     }
     
-    //onst uId = req.local.userID;
-    const uId = req.params.Id;
+    const userID = req.body._token.sub;
     let client = mongodb.getConnection();
-    const db = client.db("esgi")
 
-    try {
-        const filter = {"_id" :ObjectId(uId)}
-        const result = db.collection("user").findOne(filter);
-        console.log(result);
-    } catch(e) {
-        throw new customError("L'id de l'user est incorrecte", 404);
-    }
+    const filter = {"userId" :ObjectId(userID)}
 
-    let filter;
-
-    try {
-        filter = { "userId" : uId};
-    } catch(e) {
-        throw new customError("L'id n'est pas valable", 404);
-    }
-
-    try {
-        const option = {
-           sort: {createdAt : -1}  
-        }
-        const result = await db.collection("note").find(filter, option).toArray();
-        return res.send(result);
-    } catch(e) {
-        throw new customError("Impossible de récupérer la note", 402);
-    }
+    const option = {
+        sort: {createdAt : -1}  
+     }
+     const result = await client.db("esgi").collection("note").find(filter, option).toArray();
+     return res.send(result);
 }
 
