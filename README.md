@@ -27,6 +27,8 @@ Cours Node.jsCours Node.js - Réalisation d'une API pour un client
 
 - Lancer le serveur
 ```
+    // First replace production=true by production=false in the config.default.json
+    // and after start the server
     npm start
 ```
 
