@@ -1,0 +1,48 @@
+{
+  "welcome": {
+    "message": "Bonjour tout le monde",
+    "other": "Je vais bien !"
+  },
+  "error": {
+    "user": {
+      "passwordLenght": {
+        "message": "Le mot de passe doit contenir au moins 4 caractères",
+        "code": 400
+      },
+      "usernameLenght": {
+        "message": "Votre identifiant doit contenir entre 2 et 20 caractères",
+        "code": 400
+      },
+      "usernameFormat": {
+        "message": "Votre identifiant ne doit contenir que des lettres minuscules non accentuées",
+        "code": 400
+      },
+      "usernameAlreadyExist": {
+        "message": "Cet identifiant est déjà associé à un compte",
+        "code": 400
+      },
+      "usernameNotExist": {
+        "message": "Cet identifiant est inconnu",
+        "code": 403
+      },
+      "notConnected": {
+        "message": "Utilisateur non connecté",
+        "code": 401
+      }
+    },
+    "note": {
+      "notFound": {
+        "message": "Cet identifiant est inconnu",
+        "code": 404
+      },
+      "accessForbiden": {
+        "message": "Accès non autorisé à cette note",
+        "code": 403
+      },
+      "noContent": {
+        "message": "Le contenu est requis",
+        "code": 400
+      }
+    }
+  }
+}
