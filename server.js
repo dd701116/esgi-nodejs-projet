@@ -27,15 +27,18 @@ if (config_default.production){
 
 // Add cors policy
 fastify.register(require('fastify-cors'), { 
-  origin: (origin, cb) => {
-    //  Request from everywhere will pass
-    cb(null, true)
-    console.log("[ORIGIN] => "+origin);
-  }
+  origin: "*",
+  methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'],
+  preflightContinue: true,
+  optionsSuccessStatus: 204,
+  preflight:true,
 })
 
 // Declare a route
 fastify.get('/', async (request, reply) => {
+  return { hello: 'world', other: 'I\'m fine !' };
+});
+fastify.options('/*', async (request, reply) => {
   return { hello: 'world', other: 'I\'m fine !' };
 });
 
