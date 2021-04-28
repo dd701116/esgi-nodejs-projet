@@ -1,5 +1,5 @@
 const note = require('../models/note.model');
-const customError = require('../models/CustomError');
+const {ErrorFactory} = require('../models/CustomError');
 const mongodb = require("../db/client.db");
 const ObjectId = require('mongodb').ObjectID;
 
@@ -8,10 +8,10 @@ exports.create = async (req, res) => {
     
     //Si pas de body
     if (!req.body || !req.body.content) {
-        throw new customError("Le contenu est requis", 400);
+        throw ErrorFactory("note.noContent", req.query.lang);
     }
     if (req.body._token===false) {
-        throw new customError("Utilisateur non connecté", 401);
+        throw ErrorFactory("user.notConnected", req.query.lang);
     }
 
     const client = mongodb.getConnection();
@@ -20,7 +20,7 @@ exports.create = async (req, res) => {
 
     const content = req.body.content;
 
-    const newNote = note.create(userID, content);
+    const newNote = note.create(userID, content, req.query.lang);
 
     const result = await client.db("esgi").collection("note").insertOne(newNote);
     return res.send({note: result.ops[0]});
@@ -29,13 +29,13 @@ exports.create = async (req, res) => {
 exports.change = async (req, res) => {
 
     if (!req.params || !req.params.id) {
-        throw new customError("L'id de la note est requis", 403);
+        throw ErrorFactory("note.notFound", req.query.lang);
     }
     if (!req.body || !req.body.content) {
-        throw new customError("Le nouveau contenu de la note est requis", 403);
+        throw ErrorFactory("note.noContent", req.query.lang);
     }
     if (req.body._token===false) {
-        throw new customError("Utilisateur non connecté", 401);
+        throw ErrorFactory("user.notConnected", req.query.lang);
     }
 
     //Si pas d'erreur on rajoute la note a la BDD
@@ -48,11 +48,11 @@ exports.change = async (req, res) => {
     const note = await client.db("esgi").collection("note").findOne(filter);
     
     if (!note) {
-        throw new customError("L'id n'est pas valable", 406);
+        throw ErrorFactory("note.notFound", req.query.lang);
     }
 
     if (note.userId.toString()!==userID) {
-        throw new customError("Accès non autorisé à cette note", 403);
+        throw ErrorFactory("note.accessForbiden", req.query.lang);
     }
 
     const updateDoc = {
@@ -68,10 +68,10 @@ exports.change = async (req, res) => {
 
 exports.delete = async (req, res) => {
     if (!req.params || !req.params.id) {
-        throw new customError("L'id de la note est requis", 403);
+        throw ErrorFactory("note.notFound", req.query.lang);
     }
     if (req.body._token===false) {
-        throw new customError("Utilisateur non connecté", 401);
+        throw ErrorFactory("user.notConnected", req.query.lang);
     }
 
     const userID = req.body._token.sub;
@@ -82,11 +82,11 @@ exports.delete = async (req, res) => {
     const note = await client.db("esgi").collection("note").findOne(filter);
     
     if (!note) {
-        throw new customError("L'id n'est pas valable", 406);
+        throw ErrorFactory("note.notFound", req.query.lang);
     }
 
     if (note.userId.toString()!==userID) {
-        throw new customError("Accès non autorisé à cette note", 403);
+        throw ErrorFactory("note.accessForbiden", req.query.lang);
     }
 
     await client.db("esgi").collection("note").deleteOne(filter);
@@ -96,7 +96,7 @@ exports.delete = async (req, res) => {
 
 exports.getAllNotesByUser = async (req, res ) => { 
     if (req.body._token===false) {
-        throw new customError("Utilisateur non connecté", 401);
+        throw ErrorFactory("user.notConnected", req.query.lang);
     }
     
     const userID = req.body._token.sub;

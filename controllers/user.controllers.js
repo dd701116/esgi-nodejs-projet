@@ -1,4 +1,4 @@
-const CustomError = require('../models/CustomError');
+const {ErrorFactory} = require('../models/CustomError');
 const mongodb = require('../db/client.db');
 const token = require('../models/Token');
 const User = require('../models/User');
@@ -7,53 +7,43 @@ const bcrypt = require('bcrypt');
 
 exports.signin = async (req, res) => {
 
-    if (!req.body || !req.body.username || !req.body.password){
-        throw new CustomError('Merci de spécifier votre username & password', 403);
+    if (!req.body.username || !req.body.password){
+        throw ErrorFactory("user.noUsernameAndnoPassword", req.query.lang);
     }
 
-    const user = User.parse(req.body.username, req.body.password);
+    const user = User.parse(req.body.username, req.body.password, req.query.lang);
 
     let client = mongodb.getConnection();
-    const filter = {  "username" : user.username};
+    const filter = { "username" : user.username};
 
-    try{
-        const result = await client.db("esgi").collection("user").findOne(filter);
-        if (!result){
-            throw new CustomError("Username incorrect", 407);
-        }
-
-        const samePassword = await bcrypt.compare(user.password, result.password);
-
-        if (!samePassword){
-            throw new CustomError("Mot de passe incorrect", 408);
-        }
-
-        user._id = result._id;
-        res.send({token: token.create(user, req.body._config.JWT_KEY)});
-
-    }catch(e){
-        throw new CustomError(e.message, 406);
+    const result = await client.db("esgi").collection("user").findOne(filter);
+    if (!result){
+        throw ErrorFactory("user.usernameNotExists", req.query.lang);
     }
+
+    const samePassword = await bcrypt.compare(user.password, result.password);
+
+    if (!samePassword){
+        throw ErrorFactory("user.wrongPassword", req.query.lang);
+    }
+
+    user._id = result._id;
+    res.send({token: token.create(user, req.body._config.JWT_KEY)});
 }
 
 exports.signup = async (req, res) => {
 
-    const user = User.create(req.body.username, req.body.password);
+    const user = User.create(req.body.username, req.body.password, req.query.lang);
     const filter = {  "username" : user.username};
 
     let client = mongodb.getConnection();
 
-    try{
-        const result = await client.db("esgi").collection("user").findOne(filter);
-        if (result) {
-            throw new CustomError("Cet identifiant est déjà associé à un compte", 400);
-        }
-        await client.db("esgi").collection("user").insertOne(user);
-        const result2 = await client.db("esgi").collection("user").findOne(filter);
-        user._id = result2._id;
-        res.send({token: token.create(user, req.body._config.JWT_KEY)});
-
-    }catch(e){
-        throw new CustomError(e.message, 406);
+    const result = await client.db("esgi").collection("user").findOne(filter);
+    if (result) {
+        throw ErrorFactory("user.usernameAlreadyExists", req.query.lang);
     }
+    await client.db("esgi").collection("user").insertOne(user);
+    const result2 = await client.db("esgi").collection("user").findOne(filter);
+    user._id = result2._id;
+    res.send({token: token.create(user, req.body._config.JWT_KEY)});
 }
