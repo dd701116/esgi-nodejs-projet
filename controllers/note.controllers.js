@@ -8,7 +8,7 @@ exports.create = async (req, res) => {
     
     //Si pas de body
     if (!req.body || !req.body.content) {
-        throw new customError("Le contenu est requis", 401);
+        throw new customError("Le contenu est requis", 400);
     }
     if (req.body._token===false) {
         throw new customError("Utilisateur non connecté", 401);
