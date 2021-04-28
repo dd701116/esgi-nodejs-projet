@@ -17,13 +17,21 @@
         "message": "Votre identifiant ne doit contenir que des lettres minuscules non accentuées",
         "code": 400
       },
-      "usernameAlreadyExist": {
+      "usernameAlreadyExists": {
         "message": "Cet identifiant est déjà associé à un compte",
         "code": 400
       },
-      "usernameNotExist": {
+      "usernameNotExists": {
         "message": "Cet identifiant est inconnu",
         "code": 403
+      },
+      "wrongPassword": {
+        "message": "Mot de passe incorrect",
+        "code": 403
+      },
+      "noUsernameAndnoPassword": {
+        "message": "Merci de spécifier votre nom d'utilisateur & mot de passe",
+        "code": 400
       },
       "notConnected": {
         "message": "Utilisateur non connecté",

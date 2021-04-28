@@ -10,20 +10,28 @@
         "code": 400
       },
       "usernameLenght": {
-        "message": "Votre identifiant doit contenir entre 2 et 20 caractères",
-        "code": 400
-      },
-      "usernameFormat": {
         "message": "Your username must contain between 2 and 20 characters",
         "code": 400
       },
-      "usernameAlreadyExist": {
+      "usernameFormat": {
+        "message": "Your username should only contain lowercase unaccented letters",
+        "code": 400
+      },
+      "usernameAlreadyExists": {
         "message": "This username is already associated with an account",
         "code": 400
       },
-      "usernameNotExist": {
+      "usernameNotExists": {
         "message": "This username is unknown",
         "code": 403
+      },
+      "wrongPassword": {
+        "message": "Incorrect password",
+        "code": 403
+      },
+      "noUsernameAndnoPassword": {
+        "message": "Please specify your username and password",
+        "code": 400
       },
       "notConnected": {
         "message": "User not logged in",
