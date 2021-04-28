@@ -1,0 +1,48 @@
+{
+  "welcome": {
+    "message": "Hello world",
+    "other": "I'm fine !"
+  },
+  "error": {
+    "user": {
+      "passwordLenght": {
+        "message": "Password must contain at least 4 characters",
+        "code": 400
+      },
+      "usernameLenght": {
+        "message": "Votre identifiant doit contenir entre 2 et 20 caractères",
+        "code": 400
+      },
+      "usernameFormat": {
+        "message": "Your username must contain between 2 and 20 characters",
+        "code": 400
+      },
+      "usernameAlreadyExist": {
+        "message": "This username is already associated with an account",
+        "code": 400
+      },
+      "usernameNotExist": {
+        "message": "This username is unknown",
+        "code": 403
+      },
+      "notConnected": {
+        "message": "User not logged in",
+        "code": 401
+      }
+    },
+    "note": {
+      "notFound": {
+        "message": "This note is unknown",
+        "code": 404
+      },
+      "accessForbiden": {
+        "message": "Unauthorized access to this note",
+        "code": 403
+      },
+      "noContent": {
+        "message": "Content is required",
+        "code": 400
+      }
+    }
+  }
+}
