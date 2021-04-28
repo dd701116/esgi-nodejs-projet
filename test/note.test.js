@@ -1,6 +1,6 @@
 const assert = require('assert');
 const note = require('../models/note.model');
-const customError = require('../models/CustomError');
+const {CustomError, ErrorFactory} = require('../models/CustomError');
 
 
 
@@ -13,21 +13,21 @@ describe('The note module', () => {
     it("Should show 'Le format de la note n'est pas accepté'", () => {
         assert.throws(() => {
             note.create(1234, 1234);
-            }, new customError("Le format de la note n'est pas accepté", 400)
+            }, new CustomError("Le format de la note n'est pas accepté", 400)
         );
     });
 
     it("Should show 'La note ne peut être vide'", () => {
         assert.throws(() => {
             note.create(1234, "");
-        }, new customError("La note ne peut être vide", 400)
+        }, ErrorFactory("note.noContent")
         );
     });
 
     it("Should show 'L\'utilisateur ne peut etre vide'", () => {
         assert.throws(() => {
             note.create("");
-        }, new customError("L'utilisateur ne peut etre vide", 400)
+        }, new CustomError("L'utilisateur ne peut etre vide", 400)
         );
     });
 

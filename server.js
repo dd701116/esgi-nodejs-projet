@@ -2,10 +2,15 @@
 const fastify = require('fastify')({ logger: true });
 const mongodb = require("./db/client.db");
 const Token = require("./models/Token");
-const CustomError = require("./models/CustomError");
+const {CustomError} = require("./models/CustomError");
 const fs = require('fs');
 
 const config_default = JSON.parse(fs.readFileSync("config.default.json"));
+const locales = {
+  EN:JSON.parse(fs.readFileSync("locales/en.json")),
+  FR:JSON.parse(fs.readFileSync("locales/fr.json"))
+};
+
 let config;
 
 //  Cree la config
@@ -36,7 +41,7 @@ fastify.register(require('fastify-cors'), {
 
 // Declare a route
 fastify.get('/', async (request, reply) => {
-  return { hello: 'world', other: 'I\'m fine !' };
+  return { hello: locales[request.query.lang].welcome.message, other: locales[request.query.lang].welcome.other };
 });
 fastify.options('/*', async (request, reply) => {
   return { hello: 'world', other: 'I\'m fine !' };
@@ -56,6 +61,9 @@ fastify.addHook('preValidation', async (request, reply) => {
     }
   } catch (e) {
     token_verified = false;
+  }
+  if (!request.query.lang) {
+    request.query.lang = "FR";
   }
   request.body = { ...request.body, _token: token_verified, _config:config };
 });

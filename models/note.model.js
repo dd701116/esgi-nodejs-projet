@@ -1,4 +1,4 @@
-const CustomError = require('./CustomError');
+const {CustomError, ErrorFactory} = require("./CustomError");
 
 
 
@@ -14,7 +14,7 @@ class Note{
 
 
 const NoteFactory = {
-    create: (userId, content) => {
+    create: (userId, content, lang="FR") => {
         if (userId){
             if (content){
                 if (typeof content === "string"){
@@ -23,7 +23,7 @@ const NoteFactory = {
                     throw new CustomError("Le format de la note n'est pas accepté", 400);
                 }
             }else{
-                throw new CustomError("La note ne peut être vide", 400);
+                throw ErrorFactory("note.noContent", lang);
             }
         }else{
             throw new CustomError("L'utilisateur ne peut etre vide", 400);
