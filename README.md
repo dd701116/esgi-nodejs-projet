@@ -1,6 +1,16 @@
 # esgi-nodejs-projet
 Cours Node.jsCours Node.js - Réalisation d'une API pour un client
 
+## Framework
+Pour ce projet nous utilisons le Framework Fastify à la place du populaire Express.
+Fastify a l’avantage notable d’être plus rapide qu’Express, il traite en effet un nombre de requêtes à la seconde plus important. 
+Fastify permet également une gestion des erreurs plus simplifié. Les erreurs sont directement transmises au Handler qui va lui-même gérer les erreurs. 
+
+sources : 
+https://javascript.plainenglish.io/fastify-express-benchmark-4c4aebb726d6
+https://medium.com/@onufrienkos/express-vs-fastify-performance-4dd5d73e08e2
+https://www.codeheroes.fr/2021/03/29/a-la-decouverte-de-fastify/
+
 
 ## Installation
 
